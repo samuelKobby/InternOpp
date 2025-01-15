@@ -1,0 +1,35 @@
+.dialogContent {
+  background-color: white;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.dialogContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialogContent::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dialogContent::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.dialogContent::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.selectContent {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.selectTrigger {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+}
