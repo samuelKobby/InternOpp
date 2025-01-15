@@ -208,67 +208,74 @@ const ReviewModerationPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border border-gray-200 dark:border-gray-600">
-            <div className="grid grid-cols-7 gap-4 p-4 font-medium border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
-              <div className="col-span-2">Review</div>
-              <div>User</div>
-              <div>Company</div>
-              <div>Rating</div>
-              <div>Status</div>
-              <div className="text-right">Actions</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div className="max-h-[500px] overflow-y-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 dark:bg-gray-900 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Review</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">User</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Company</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Rating</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {filteredReviews.map((review) => (
+                    <tr key={review.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <p className="whitespace-pre-wrap break-words dark:text-gray-400 ">{review.content}</p>
+                        <div className="text-sm text-gray-500 mt-1 flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                          <span>Submitted: {review.submitted}</span>
+                          {review.flags > 0 && (
+                            <span className="text-red-500 flex items-center gap-1">
+                              <Flag className="h-3 w-3" />
+                              {review.flags} flags
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap dark:text-gray-400">{review.user}</td>
+                      <td className="px-4 py-4 whitespace-nowrap dark:text-gray-400">{review.company}</td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <Badge variant="secondary" className="flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-current" />
+                          {review.rating}/5
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <Badge
+                          variant={
+                            review.status === 'Approved'
+                              ? 'success'
+                              : review.status === 'Rejected'
+                              ? 'destructive'
+                              : 'secondary'
+                          }
+                          className="capitalize"
+                        >
+                          {review.status}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex justify-end space-x-2">
+                          <Button variant="ghost" size="icon" className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-100">
+                            <ThumbsUp className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-100">
+                            <ThumbsDown className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {filteredReviews.map((review) => (
-              <div
-                key={review.id}
-                className="grid grid-cols-7 gap-4 p-4 border-b border-gray-200 dark:border-gray-600 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              >
-                <div className="col-span-2">
-                  <p className="line-clamp-2">{review.content}</p>
-                  <div className="text-sm text-gray-500 mt-1 flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                    <span>Submitted: {review.submitted}</span>
-                    {review.flags > 0 && (
-                      <span className="text-red-500 flex items-center gap-1">
-                        <Flag className="h-3 w-3" />
-                        {review.flags} flags
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div>{review.user}</div>
-                <div>{review.company}</div>
-                <div>
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    <Star className="h-3 w-3 fill-current" />
-                    {review.rating}/5
-                  </Badge>
-                </div>
-                <div>
-                  <Badge
-                    variant={
-                      review.status === 'Approved'
-                        ? 'success'
-                        : review.status === 'Rejected'
-                        ? 'destructive'
-                        : 'secondary'
-                    }
-                    className="capitalize"
-                  >
-                    {review.status}
-                  </Badge>
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <Button variant="ghost" size="icon" className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-100">
-                    <ThumbsUp className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-100">
-                    <ThumbsDown className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
           </div>
         </CardContent>
       </Card>

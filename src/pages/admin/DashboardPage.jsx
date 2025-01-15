@@ -280,55 +280,44 @@ const DashboardPage = () => {
       </div>
 
       {/* Recent Applications */}
-      <Card className="bg-white dark:bg-gray-700">
-        <CardHeader>
-          <CardTitle className="text-gray-800 dark:text-white">Recent Applications</CardTitle>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Latest internship applications</p>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-md border border-gray-200 dark:border-gray-600">
-            <div className="grid grid-cols-5 gap-4 p-4 font-medium border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
-              <div>Name</div>
-              <div>Position</div>
-              <div>Company</div>
-              <div>Status</div>
-              <div>Date</div>
-            </div>
-            {recentApplications.map((application, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-5 gap-4 p-4 border-b border-gray-200 dark:border-gray-600 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <div className="text-sm font-medium text-gray-800 dark:text-white">
-                  {application.name}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {application.position}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {application.company}
-                </div>
-                <div>
-                  <span
-                    className={`px-2 py-1 text-sm rounded-full ${
-                      application.status === 'Accepted'
-                        ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                        : application.status === 'Rejected'
-                        ? 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
-                        : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
-                    }`}
-                  >
-                    {application.status}
-                  </span>
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {application.date}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <div className="max-h-[400px] overflow-y-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-900 sticky top-0">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Position</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Company</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {recentApplications.map((application, index) => (
+                <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{application.name}</td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{application.position}</td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{application.company}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        application.status === 'Accepted'
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                          : application.status === 'Rejected'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      }`}
+                    >
+                      {application.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{application.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

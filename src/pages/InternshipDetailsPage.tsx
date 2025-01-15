@@ -165,7 +165,7 @@ const ApplicationForm = ({ isOpen, onClose }: any) => {
               style={{ width: `${(step / totalSteps) * 100}%` }}
             />
           </div>
-          <div className="mt-2 flex justify-between text-sm text-gray-600 dark:text-gray-300">
+          <div className="mt-2 flex justify-between text-sm text-gray-600 dark:text-black-300">
             <span>Step {step} of {totalSteps}</span>
             <span>{Math.round((step / totalSteps) * 100)}% Complete</span>
           </div>
@@ -342,7 +342,7 @@ const InternshipDetailsPage = () => {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white">About {internshipData.companyName}</h2>
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-blue">About {internshipData.companyName}</h2>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -354,7 +354,7 @@ const InternshipDetailsPage = () => {
                   <div className={`mt-4 transition-all duration-300 ${
                     expandedSections.about ? 'block' : 'max-h-24 overflow-hidden'
                   }`}>
-                    <p className="text-gray-600 dark:text-gray-300">{internshipData.aboutCompany}</p>
+                    <p className="text-gray-600 dark:text-black-300">{internshipData.aboutCompany}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -363,7 +363,7 @@ const InternshipDetailsPage = () => {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Responsibilities</h2>
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-blue">Responsibilities</h2>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -372,7 +372,7 @@ const InternshipDetailsPage = () => {
                       {expandedSections.responsibilities ? <ChevronUp /> : <ChevronDown />}
                     </Button>
                   </div>
-                  <ul className={`mt-4 list-inside list-disc space-y-2 text-gray-600 dark:text-gray-300 transition-all duration-300 ${
+                  <ul className={`mt-4 list-inside list-disc space-y-2 text-gray-600 dark:text-black-300 transition-all duration-300 ${
                     expandedSections.responsibilities ? 'block' : 'max-h-24 overflow-hidden'
                   }`}>
                     {internshipData.responsibilities.map((responsibility, index) => (
@@ -386,7 +386,7 @@ const InternshipDetailsPage = () => {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Requirements</h2>
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-blue">Requirements</h2>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -395,7 +395,7 @@ const InternshipDetailsPage = () => {
                       {expandedSections.requirements ? <ChevronUp /> : <ChevronDown />}
                     </Button>
                   </div>
-                  <ul className={`mt-4 list-inside list-disc space-y-2 text-gray-600 dark:text-gray-300 transition-all duration-300 ${
+                  <ul className={`mt-4 list-inside list-disc space-y-2 text-gray-600 dark:text-black-300 transition-all duration-300 ${
                     expandedSections.requirements ? 'block' : 'max-h-24 overflow-hidden'
                   }`}>
                     {internshipData.requirements.map((requirement, index) => (
@@ -426,26 +426,26 @@ const InternshipDetailsPage = () => {
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Internship Details</h2>
-                <div className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-blue">Internship Details</h2>
+                <div className="mt-4 space-y-2 text-gray-600 dark:text-black-300">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <Calendar className="h-5 w-5 text-gray-500 dark:text-black-400" />
                     <span>Deadline: {internshipData.deadline}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <MapPin className="h-5 w-5 text-gray-500 dark:text-black-400" />
                     <span>{internshipData.location}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Building className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <Building className="h-5 w-5 text-gray-500 dark:text-black-400" />
                     <span>{internshipData.companyName}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <DollarSign className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <DollarSign className="h-5 w-5 text-gray-500 dark:text-black-400" />
                     <span>${internshipData.stipend}/month</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <Clock className="h-5 w-5 text-gray-500 dark:text-black-400" />
                     <span>Duration: {internshipData.duration}</span>
                   </div>
                 </div>

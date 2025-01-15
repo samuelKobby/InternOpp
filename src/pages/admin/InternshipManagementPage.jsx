@@ -237,8 +237,8 @@ const InternshipManagementPage = () => {
                 <SelectContent className={styles.selectContent}>
                   <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="Active">Active</SelectItem>
-                  <SelectItem value="Closed">Closed</SelectItem>
                   <SelectItem value="Draft">Draft</SelectItem>
+                  <SelectItem value="Closed">Closed</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={typeFilter} onValueChange={(value) => setTypeFilter(value)}>
@@ -276,7 +276,7 @@ const InternshipManagementPage = () => {
                 </div>
                 <div>{internship.location}</div>
                 <div>
-                  <Badge variant="outline" className="capitalize text-gray-800 dark:text-white">{internship.type}</Badge>
+                  <Badge variant="outline" className="capitalize text-gray-700 dark:text-gray-300">{internship.type}</Badge>
                 </div>
                 <div>
                   <Badge
@@ -287,7 +287,7 @@ const InternshipManagementPage = () => {
                         ? 'secondary'
                         : 'destructive'
                     }
-                    className="capitalize text-gray-800 dark:text-white"
+                    className="capitalize text-gray-700 dark:text-gray-300"
                   >
                     {internship.status}
                   </Badge>
@@ -295,7 +295,7 @@ const InternshipManagementPage = () => {
                 <div>{internship.applications}</div>
                 <div>{internship.deadline}</div>
                 <div className="flex justify-end space-x-2">
-                  <Button variant="ghost" size="icon" className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-100">
+                  <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
                     <Edit2 className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-100">
@@ -310,6 +310,17 @@ const InternshipManagementPage = () => {
           </div>
         </CardContent>
       </Card>
+
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+        <Button variant="outline" className="w-full sm:w-auto border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+          <Filter className="h-4 w-4 mr-2" />
+          Filter
+        </Button>
+        <Button variant="outline" className="w-full sm:w-auto border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+          <Download className="h-4 w-4 mr-2" />
+          Export
+        </Button>
+      </div>
 
       {/* Add New Internship Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

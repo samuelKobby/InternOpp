@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, Search, Filter, MoreVertical } from 'lucide-react
 const InternshipManagement = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Mock data for internships
   const internships = [
@@ -123,120 +124,119 @@ const InternshipManagement = () => {
     </div>
   );
 
+  const handleEdit = (internship) => {
+    setSelectedInternship(internship);
+    setShowAddModal(true);
+  };
+
+  const handleDelete = (id) => {
+    // Delete internship logic here
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6 pt-20">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">Internship Management</h1>
-            <p className="text-gray-600">Manage and monitor all internship listings</p>
+    <div className="p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Internship Management</h1>
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
+          <div className="relative flex-grow sm:flex-grow-0">
+            <input
+              type="text"
+              placeholder="Search internships..."
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center"
           >
-            <Plus size={20} className="mr-2" />
-            Add New Internship
+            <Plus className="h-5 w-5 mr-2" />
+            Add Internship
           </button>
         </div>
-
-        {/* Search and Filter Bar */}
-        <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
-            <div className="flex-1 mb-4 md:mb-0">
-              <div className="relative">
-                <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search internships..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div className="flex space-x-2">
-              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                <Filter size={20} className="mr-2" />
-                Filters
-              </button>
-              <select className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option>All Status</option>
-                <option>Active</option>
-                <option>Inactive</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Internships Table */}
-        <div className="bg-white rounded-lg shadow-md">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="text-left px-6 py-3 text-gray-600">Title</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Company</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Location</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Stipend</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Applicants</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Status</th>
-                  <th className="text-left px-6 py-3 text-gray-600">Posted</th>
-                  <th className="px-6 py-3"><span className="sr-only">Actions</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                {internships.map((internship) => (
-                  <tr key={internship.id} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium">{internship.title}</td>
-                    <td className="px-6 py-4 text-gray-600">{internship.company}</td>
-                    <td className="px-6 py-4 text-gray-600">{internship.location}</td>
-                    <td className="px-6 py-4 text-gray-600">{internship.stipend}</td>
-                    <td className="px-6 py-4">{internship.applicants}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        internship.status === 'active' 
-                          ? 'bg-green-100 text-green-600' 
-                          : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        {internship.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">{internship.posted}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex justify-end space-x-2">
-                        <button 
-                          onClick={() => setSelectedInternship(internship)}
-                          className="p-1 hover:bg-gray-100 rounded-full"
-                        >
-                          <Pencil size={16} className="text-gray-600" />
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded-full">
-                          <Trash2 size={16} className="text-red-600" />
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded-full">
-                          <MoreVertical size={16} className="text-gray-600" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Add/Edit Modal */}
-        {(showAddModal || selectedInternship) && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-              <h2 className="text-xl font-bold mb-4">
-                {selectedInternship ? 'Edit Internship' : 'Add New Internship'}
-              </h2>
-              <InternshipForm internship={selectedInternship} />
-            </div>
-          </div>
-        )}
       </div>
+
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-900">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title</th>
+              <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Company</th>
+              <th className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
+              <th className="hidden lg:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Posted Date</th>
+              <th className="hidden xl:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {internships.map((internship) => (
+              <tr key={internship.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td className="px-4 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{internship.title}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400 sm:hidden">{internship.company}</div>
+                    </div>
+                  </div>
+                </td>
+                <td className="hidden sm:table-cell px-4 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900 dark:text-white">{internship.company}</div>
+                </td>
+                <td className="hidden md:table-cell px-4 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900 dark:text-white">{internship.location}</div>
+                </td>
+                <td className="hidden lg:table-cell px-4 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900 dark:text-white">
+                    {new Date(internship.posted).toLocaleDateString()}
+                  </div>
+                </td>
+                <td className="hidden xl:table-cell px-4 py-4 whitespace-nowrap">
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    internship.status === 'active'
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                      : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                  }`}>
+                    {internship.status}
+                  </span>
+                </td>
+                <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => handleEdit(internship)}
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(internship.id)}
+                      className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <button className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300">
+                      <MoreVertical className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Add/Edit Modal */}
+      {(showAddModal || selectedInternship) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+            <h2 className="text-xl font-bold mb-4">
+              {selectedInternship ? 'Edit Internship' : 'Add New Internship'}
+            </h2>
+            <InternshipForm internship={selectedInternship} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
