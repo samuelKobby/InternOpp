@@ -165,12 +165,15 @@ const UserManagementPage = () => {
             Manage and monitor user accounts
           </p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" className="w-full sm:w-auto border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
             <Download className="h-4 w-4 mr-2" />
             Export Users
           </Button>
-          <Button onClick={() => setIsModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600">
+          <Button 
+            onClick={() => setIsModalOpen(true)} 
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+          >
             <UserPlus className="h-4 w-4 mr-2" />
             Add New User
           </Button>
@@ -204,7 +207,7 @@ const UserManagementPage = () => {
           <CardTitle className="text-gray-800 dark:text-white">Users</CardTitle>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground text-gray-500 dark:text-gray-400" />
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground text-gray-600 dark:text-gray-300" />
               <Input
                 placeholder="Search users..."
                 className="pl-8 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600"
@@ -237,52 +240,66 @@ const UserManagementPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border border-gray-200 dark:border-gray-600">
-            <div className="grid grid-cols-7 gap-4 p-4 font-medium border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
-              <div className="col-span-2">Name</div>
-              <div>Role</div>
-              <div>Status</div>
-              <div>Phone</div>
-              <div>Last Login</div>
-              <div className="text-right">Actions</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div className="max-h-[500px] overflow-y-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 dark:bg-gray-900 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phone</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Last Login</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {filteredUsers.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            {/* <img className="h-10 w-10 rounded-full" src={user.avatar} alt="" /> */}
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{`${user.firstName} ${user.lastName}`}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap dark:text-gray-400">
+                        <Badge variant="outline" className="capitalize text-gray-700 dark:text-gray-300">
+                          {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <Badge
+                          variant={user.status === 'active' ? 'success' : 'secondary'}
+                          className="capitalize text-gray-700 dark:text-gray-300"
+                        >
+                          {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap dark:text-gray-400">{user.phone}</td>
+                      <td className="px-4 py-4 whitespace-nowrap dark:text-gray-400">{user.lastLogin}</td>
+                      <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex justify-end space-x-2">
+                          <Button variant="ghost" size="icon" className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-100">
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-100">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {filteredUsers.map((user) => (
-              <div
-                key={user.id}
-                className="grid grid-cols-7 gap-4 p-4 border-b border-gray-200 dark:border-gray-600 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              >
-                <div className="col-span-2">
-                  <div className="font-medium text-gray-800 dark:text-white">{`${user.firstName} ${user.lastName}`}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
-                </div>
-                <div>
-                  <Badge variant="outline" className="capitalize text-gray-700 dark:text-gray-300">
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                  </Badge>
-                </div>
-                <div>
-                  <Badge
-                    variant={user.status === 'active' ? 'success' : 'secondary'}
-                    className="capitalize text-gray-700 dark:text-gray-300"
-                  >
-                    {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                  </Badge>
-                </div>
-                <div>{user.phone}</div>
-                <div>{user.lastLogin}</div>
-                <div className="flex justify-end space-x-2">
-                  <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-100">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
           </div>
         </CardContent>
       </Card>
