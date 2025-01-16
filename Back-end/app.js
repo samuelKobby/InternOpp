@@ -15,6 +15,11 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Root route for testing
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to InternOpp API' });
+});
+
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));

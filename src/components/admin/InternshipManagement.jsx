@@ -1,44 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Search, Filter, MoreVertical } from 'lucide-react';
+import Swal from 'sweetalert2';
+import { internshipAPI } from '../../services/api';
 
 const InternshipManagement = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Mock data for internships
-  const internships = [
-    {
-      id: 1,
-      title: "Frontend Developer Intern",
-      company: "Tech Solutions Inc.",
-      location: "San Francisco, CA",
-      stipend: "$3000/month",
-      applicants: 45,
-      status: "active",
-      posted: "2024-01-10"
-    },
-    {
-      id: 2,
-      title: "Marketing Coordinator Intern",
-      company: "Growth Marketing Co",
-      location: "New York, NY",
-      stipend: "$2500/month",
-      applicants: 32,
-      status: "active",
-      posted: "2024-01-08"
-    },
-    {
-      id: 3,
-      title: "Data Science Intern",
-      company: "Analytics Pro",
-      location: "Remote",
-      stipend: "$4000/month",
-      applicants: 28,
-      status: "inactive",
-      posted: "2024-01-05"
+  useEffect(() => {
+    fetchInternships();
+  }, []);
+
+  const fetchInternships = async () => {
+    try {
+      setLoading(true);
+      const response = await internshipAPI.getAllInternships({ query: searchQuery });
+      setInternships(response.data);
+    } catch (error) {
+      Swal.fire('Error', 'Failed to fetch internships', 'error');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    // Debounce search
+    const timeoutId = setTimeout(() => {
+      fetchInternships();
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        await internshipAPI.deleteInternship(id);
+        Swal.fire(
+          'Deleted!',
+          'Internship has been deleted.',
+          'success'
+        );
+        fetchInternships();
+      }
+    } catch (error) {
+      Swal.fire(
+        'Error!',
+        'Failed to delete internship.',
+        'error'
+      );
+    }
+  };
+
+  const handleSubmit = async (formData) => {
+    try {
+      if (selectedInternship) {
+        await internshipAPI.updateInternship(selectedInternship.id, formData);
+        Swal.fire('Success', 'Internship updated successfully', 'success');
+      } else {
+        await internshipAPI.createInternship(formData);
+        Swal.fire('Success', 'Internship created successfully', 'success');
+      }
+      setShowAddModal(false);
+      setSelectedInternship(null);
+      fetchInternships();
+    } catch (error) {
+      Swal.fire('Error', error.response?.data?.message || 'Failed to save internship', 'error');
+    }
+  };
 
   const InternshipForm = ({ internship = null }) => (
     <div className="space-y-4">
@@ -117,7 +159,10 @@ const InternshipManagement = () => {
         >
           Cancel
         </button>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        <button
+          onClick={() => handleSubmit()}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
           {internship ? 'Update Internship' : 'Create Internship'}
         </button>
       </div>
@@ -127,10 +172,6 @@ const InternshipManagement = () => {
   const handleEdit = (internship) => {
     setSelectedInternship(internship);
     setShowAddModal(true);
-  };
-
-  const handleDelete = (id) => {
-    // Delete internship logic here
   };
 
   return (
@@ -144,7 +185,7 @@ const InternshipManagement = () => {
               placeholder="Search internships..."
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearch}
             />
             <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
           </div>

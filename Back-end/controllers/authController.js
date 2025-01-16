@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
-const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const { User } = require('../models');
 
 // Generate JWT Token
 const generateToken = (id) => {

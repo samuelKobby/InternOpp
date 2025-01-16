@@ -1,6 +1,85 @@
 const { validationResult } = require('express-validator');
-const Internship = require('../models/Internship');
-const User = require('../models/User');
+const { Internship, User } = require('../models');
+
+// @desc    Create new internship
+// @route   POST /api/internships
+// @access  Private/Admin
+const createInternship = async (req, res) => {
+  try {
+    const {
+      title,
+      company,
+      location,
+      description,
+      requirements,
+      type,
+      duration,
+      stipend,
+      applicationDeadline,
+      companyLogo, // This will be a base64 string
+      status
+    } = req.body;
+
+    const internship = await Internship.create({
+      title,
+      company,
+      location,
+      description,
+      requirements,
+      type,
+      duration,
+      stipend,
+      applicationDeadline,
+      companyLogo,
+      status
+    });
+
+    res.status(201).json(internship);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update internship
+// @route   PUT /api/internships/:id
+// @access  Private/Admin
+const updateInternship = async (req, res) => {
+  try {
+    const internship = await Internship.findById(req.params.id);
+    
+    if (!internship) {
+      return res.status(404).json({ message: 'Internship not found' });
+    }
+
+    const updatedInternship = await Internship.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    res.json(updatedInternship);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete internship
+// @route   DELETE /api/internships/:id
+// @access  Private/Admin
+const deleteInternship = async (req, res) => {
+  try {
+    const internship = await Internship.findById(req.params.id);
+    
+    if (!internship) {
+      return res.status(404).json({ message: 'Internship not found' });
+    }
+
+    await internship.remove();
+    res.json({ message: 'Internship removed' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 // @desc    Search internships
 // @route   GET /api/internships/search
@@ -119,9 +198,12 @@ const removeBookmark = async (req, res) => {
 };
 
 module.exports = {
+  createInternship,
   searchInternships,
   getInternshipById,
   getSimilarInternships,
   bookmarkInternship,
-  removeBookmark
+  removeBookmark,
+  updateInternship,
+  deleteInternship
 };
